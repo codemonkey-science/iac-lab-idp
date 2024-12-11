@@ -21,8 +21,8 @@ jobs:
       ANSIBLE_HOST_KEY_CHECKING: False
       ANSIBLE_CONFIG: ansible/ansible.cfg
       ANSIBLE_LOCAL_TEMP: /home/ansible/.ansible/tmp
-      CF_API_EMAIL: ${{ secrets.CF_API_EMAIL }}
-      CF_API_KEY: ${{ secrets.CF_API_KEY }}
+      CLOUDFLARE_API_EMAIL: ${{ secrets.CLOUDFLARE_API_EMAIL }}
+      CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
 
     steps:
       - name: Checkout repository
