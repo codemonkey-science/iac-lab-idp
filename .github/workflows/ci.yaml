@@ -47,7 +47,7 @@ jobs:
           cd ~
           . /home/ansible/ansible-env/bin/activate
           cd $GITHUB_WORKSPACE
-          ansible-playbook -i ansible/inventory ansible/site.yml"
+          ansible-playbook -i ansible/inventory ansible/site.yml
 
       - name: Remove private key from disk
         if: always() 
