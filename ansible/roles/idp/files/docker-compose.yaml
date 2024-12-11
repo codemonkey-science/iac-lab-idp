@@ -6,7 +6,7 @@ services:
     image: traefik:v2.5
     container_name: traefik
     command:
-      - "--log.level=INFO"  # Temporarily increase for troubleshooting
+      - "--log.level=DEBUG"  # Temporarily increase for troubleshooting
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
@@ -19,7 +19,7 @@ services:
       # Keep staging URL while testing, remove for production
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
 #      - "--api.insecure=true"
-#      - "--api.dashboard=true"
+      - "--api.dashboard=true"
     environment:
       CLOUDFLARE_DNS_API_TOKEN: ${CLOUDFLARE_API_KEY}
       CF_ZONE_ID: "499898f374d9eac3df988c3780c3fa93"
@@ -71,10 +71,14 @@ services:
     command: server
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.authentik.rule=Host(`auth.east.codemonkey.science`) || Host(`auth.codemonkey.science`)"
+      - "traefik.http.routers.authentik.rule=Host(`auth.east.codemonkey.science`)"
       - "traefik.http.routers.authentik.entrypoints=websecure"
+      - "traefik.http.routers.authentik.tls=true"
       - "traefik.http.routers.authentik.tls.certresolver=myresolver"
       - "traefik.http.services.authentik.loadbalancer.server.port=9000"
+      # Add health check
+      - "traefik.http.services.authentik.loadbalancer.healthcheck.path=/-/health/live/"
+      - "traefik.http.services.authentik.loadbalancer.healthcheck.interval=30s"
     volumes:
       - ./media:/media
       - ./custom-templates:/templates
