@@ -1,8 +1,15 @@
 ---
-- name: Install Docker
+- name: Check if Docker is already installed
+  command: which docker
+  register: docker_check
+  ignore_errors: yes
+  changed_when: false
+
+- name: Install Docker if not present
   apt:
     name: docker.io
     state: present
+  when: docker_check.rc != 0
 
 - name: Install Docker Compose
   get_url:
