@@ -7,6 +7,16 @@
     group: authentik
     mode: '0644'
 
+- name: Install docker python package
+  pip:
+    name: docker
+    state: present
+
+- name: Create traefik_proxy docker network
+  docker_network:
+    name: traefik_proxy
+    state: present
+
 - name: Check if PG_PASS exists
   shell: grep -q 'PG_PASS' /opt/authentik/.env
   register: pg_pass_exists
