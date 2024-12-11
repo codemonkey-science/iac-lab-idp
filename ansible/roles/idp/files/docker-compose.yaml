@@ -6,25 +6,23 @@ services:
     image: traefik:v2.5
     container_name: traefik
     command:
-      - "--log.level=INFO"
+      - "--log.level=DEBUG"  # Temporarily increase for troubleshooting
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-#      - "--certificatesresolvers.myresolver.acme.email=${CLOUDFLARE_EMAIL}"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
-#      - "--certificatesresolvers.myresolver.acme.dnschallenge.delaybeforecheck=30"
-      - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
-      - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"      
+      - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=1.1.1.1:53"
+      # Keep staging URL while testing, remove for production
+      - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
 #      - "--api.insecure=true"
 #      - "--api.dashboard=true"
     environment:
-      CLOUDFLARE_EMAIL: ${CLOUDFLARE_EMAIL}
-      CLOUDFLARE_API_KEY: ${CLOUDFLARE_API_KEY}
       CLOUDFLARE_DNS_API_TOKEN: ${CLOUDFLARE_API_KEY}
+      CF_ZONE_ID: "499898f374d9eac3df988c3780c3fa93"
     ports:
       - "80:80"
       - "443:443"
