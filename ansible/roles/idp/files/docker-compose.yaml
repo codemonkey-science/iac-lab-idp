@@ -5,6 +5,8 @@ services:
   traefik:
     image: traefik:v2.5
     container_name: traefik
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     command:
       - "--log.level=DEBUG"  # Temporarily increase for troubleshooting
       - "--providers.docker=true"
@@ -37,6 +39,8 @@ services:
   postgresql:
     image: docker.io/library/postgres:12-alpine
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
       start_period: 20s
@@ -56,6 +60,8 @@ services:
     image: docker.io/library/redis:alpine
     command: --save 60 1 --loglevel warning
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     healthcheck:
       test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
       start_period: 20s
@@ -70,6 +76,7 @@ services:
     restart: unless-stopped
     command: server
     labels:
+      - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.authentik.rule=Host(`auth.east.codemonkey.science`)"
       - "traefik.http.routers.authentik.entrypoints=websecure"
@@ -110,6 +117,8 @@ services:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.2.2}
     restart: unless-stopped
     command: worker
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     environment:
       AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: postgresql
@@ -127,6 +136,22 @@ services:
     depends_on:
       - postgresql
       - redis
+    networks:
+      - traefik_proxy
+      - default
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    restart: unless-stopped
+    command: 
+      --cleanup --include-restarting --interval 300
+      --schedule "0 2 * * *"  # Every day at 2 AM
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./watchtower_logs:/var/log/watchtower
+    environment:
+      WATCHTOWER_LABEL_ENABLE: "true"
     networks:
       - traefik_proxy
       - default
