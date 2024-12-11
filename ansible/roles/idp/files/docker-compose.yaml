@@ -13,13 +13,13 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
       - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
-      - "--certificatesresolvers.myresolver.acme.email=${CLOUDFLARE_API_EMAIL}"
+      - "--certificatesresolvers.myresolver.acme.email=${CLOUDFLARE_EMAIL}"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
 #      - "--api.insecure=true"
 #      - "--api.dashboard=true"
     environment:
-      CLOUDFLARE_API_EMAIL: ${CLOUDFLARE_API_EMAIL}
+      CLOUDFLARE_EMAIL: ${CLOUDFLARE_EMAIL}
       CLOUDFLARE_API_KEY: ${CLOUDFLARE_API_KEY}
     ports:
       - "80:80"

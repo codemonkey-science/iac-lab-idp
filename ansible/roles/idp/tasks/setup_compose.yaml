@@ -43,15 +43,15 @@
   when: authentik_secret_key_exists.rc != 0
 
 
-- name: Check if CLOUDFLARE_API_EMAIL exists
-  shell: grep -q 'CLOUDFLARE_API_EMAIL' /opt/authentik/.env
-  register: cloudflare_api_email_exists
+- name: Check if CLOUDFLARE_EMAIL exists
+  shell: grep -q 'CLOUDFLARE_EMAIL' /opt/authentik/.env
+  register: cloudflare_email_exists
   ignore_errors: true
 
-- name: Inject CLOUDFLARE_API_EMAIL secret
+- name: Inject CLOUDFLARE_EMAIL secret
   shell:
-    cmd: echo "CLOUDFLARE_API_EMAIL={{ lookup('env', 'CLOUDFLARE_API_EMAIL') }}" >> /opt/authentik/.env
-  when: cloudflare_api_email_exists.rc != 0
+    cmd: echo "CLOUDFLARE_EMAIL={{ lookup('env', 'CLOUDFLARE_EMAIL') }}" >> /opt/authentik/.env
+  when: cloudflare_email_exists.rc != 0
 
 - name: Check if CLOUDFLARE_API_KEY exists
   shell: grep -q 'CLOUDFLARE_API_KEY' /opt/authentik/.env
