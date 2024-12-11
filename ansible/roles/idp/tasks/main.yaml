@@ -1,0 +1,16 @@
+---
+- name: Gather facts about all services
+  ansible.builtin.service_facts:
+
+- name: End playbook if authentik service is already running
+  meta: end_play
+  when: "'authentik' in ansible_facts.services and ansible_facts.services['authentik'].state == 'running'"
+
+- name: Establish prerequisites for Authentik
+  include_tasks: prereqs.yaml
+
+- name: Install Authentik Docker Compose
+  include_tasks: setup_compose.yaml
+
+- name: Install SystemD service file for Authentik
+  include_tasks: setup_daemon.yaml
