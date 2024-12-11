@@ -1,7 +1,7 @@
 ---
-- name: Copy docker-compose.yml to remote host
+- name: Copy docker-compose.yaml to remote host
   copy:
-    src: docker-compose.yml
+    src: docker-compose.yaml
     dest: /opt/authentik/docker-compose.yaml
     owner: authentik
     group: authentik
