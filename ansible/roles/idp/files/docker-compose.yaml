@@ -97,6 +97,8 @@ services:
       AUTHENTIK_HOST: 0.0.0.0
     env_file:
       - .env
+    port:
+      - "9000:9000"
     depends_on:
       - postgresql
       - redis
