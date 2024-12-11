@@ -1,7 +1,7 @@
 ---
 - name: Copy authentik.service to remote host
   copy:
-    src: ./files/authentik.service
+    src: authentik.service
     dest: /etc/systemd/system/authentik.service
     owner: root
     group: root
