@@ -69,3 +69,4 @@ jobs:
           else
             echo "Private key does not exist for some reason. Nothing to delete. Please investigate."
             exit 3
+          fi
