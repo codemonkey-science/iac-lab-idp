@@ -21,7 +21,8 @@ jobs:
       ANSIBLE_HOST_KEY_CHECKING: False
       ANSIBLE_CONFIG: ansible/ansible.cfg
       ANSIBLE_LOCAL_TEMP: /home/ansible/.ansible/tmp
-      SYSTEM_UPDATE: ${{ github.event.inputs.system_update || 'false' }}
+      CF_API_EMAIL: ${{ secrets.CF_API_EMAIL }}
+      CF_API_KEY: ${{ secrets.CF_API_KEY }}
 
     steps:
       - name: Checkout repository
@@ -46,12 +47,7 @@ jobs:
           cd ~
           . /home/ansible/ansible-env/bin/activate
           cd $GITHUB_WORKSPACE
-          ansible-playbook -i ansible/inventory ansible/site.yml \
-            --extra-vars "{
-              \"ANSIBLE_BECOME_PASS\":\"${{ secrets.ANSIBLE_BECOME_PASS }}\",
-              \"CF_API_EMAIL\":\"${{ secrets.CF_API_EMAIL }}\",
-              \"CF_API_KEY\":\"${{ secrets.CF_API_KEY }}\"
-            }"
+          ansible-playbook -i ansible/inventory ansible/site.yml"
 
       - name: Remove private key from disk
         if: always() 
