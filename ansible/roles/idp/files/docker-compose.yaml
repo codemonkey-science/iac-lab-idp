@@ -18,6 +18,7 @@ services:
       - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.myresolver.acme.dnschallenge.delaybeforecheck=30"
       - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=1.1.1.1:53,8.8.8.8:53"
+      - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"      
 #      - "--api.insecure=true"
 #      - "--api.dashboard=true"
     environment:
