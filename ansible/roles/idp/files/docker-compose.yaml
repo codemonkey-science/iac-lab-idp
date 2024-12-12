@@ -20,7 +20,7 @@ services:
       - "--certificatesresolvers.myresolver.acme.dnschallenge.resolvers=1.1.1.1:53"
       # Keep staging URL while testing, remove for production
       #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-#      - "--api.insecure=true"
+      - "--api.insecure=true"
       - "--api.dashboard=true"
     environment:
       CLOUDFLARE_DNS_API_TOKEN: ${CLOUDFLARE_API_KEY}
@@ -28,7 +28,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-#      - "8080:8080"
+      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./letsencrypt:/letsencrypt"
