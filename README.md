@@ -99,9 +99,7 @@ export ANSIBLE_BECOME_PASS=my_secure_password
 ansible-playbook -i inventory site.yml --extra-vars "system_update=true"
 ```
 
-This command will execute the playbook, applying the `common` role to the target hosts, and enable system updates.
-
-Infrastructure as Code (IaC) repository to apply the `common` Ansible role to the lab.
+This command will execute the playbook, applying the `idp` role to the target hosts, and enable system updates.
 
 ### Nuances for Different Operating Systems
 
